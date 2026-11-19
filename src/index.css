@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Tokens Dream Lab.
+ * Base do site: tema Claro (creme #f8f8f3). Seções com `.theme-dark`
+ * usam o tema Escuro da marca (preto), para hero, portfólio e contato.
+ */
+@layer base {
+  :root {
+    --background: #f8f8f3;
+    --foreground: #000000;
+    --surface: #ffffff;
+    --line: #dbddc2; /* primary-200 */
+    --muted: #4d4d4d; /* accent-700 claro: 7.9:1 */
+    --subtle: #666666; /* accent-800 claro: 5.4:1 */
+    --accent: #6f760a; /* primary-500: 4.6:1 no creme */
+    --focus: #5e6409;
+    --header-h: 72px;
+    color-scheme: light;
+  }
+
+  .theme-dark {
+    --background: #000000;
+    --foreground: #ffffff;
+    --surface: #111111;
+    --line: #262626;
+    --muted: #b3b3b3; /* accent-700 escuro: 10:1 */
+    --subtle: #8c8c8c; /* accent-800 escuro: 6.3:1 */
+    --accent: #bec191; /* primary-300: 11.2:1 */
+    --focus: #bec191;
+    color-scheme: dark;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--header-h);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply font-body antialiased;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-size: 1rem;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: #6f760a;
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  img { max-width: 100%; height: auto; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Rótulo editorial: "01 — Serviços", em caixa alta espaçada como "CREATIVE STUDIO" */
+  .eyebrow {
+    @apply font-body text-[0.75rem] font-bold uppercase;
+    letter-spacing: 0.22em;
+    color: var(--subtle);
+  }
+
+  .display {
+    @apply font-heading;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+  }
+
+  .hairline { border-color: var(--line); }
+
+  /* Botões: Button do design system (principal, destaque, contorno) */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-brand px-6 py-3 font-body text-base font-bold
+      transition-[background-color,color,border-color,transform] duration-200 ease-editorial;
+    min-height: 48px;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: #6f760a; color: #ffffff; }
+  .btn-primary:hover { background: #5e6409; }
+  .btn-accent { background: var(--foreground); color: var(--background); }
+  .btn-accent:hover { background: #6f760a; color: #ffffff; }
+  .btn-ghost {
+    border: 1px solid var(--line);
+    color: var(--foreground);
+  }
+  .btn-ghost:hover { border-color: var(--foreground); }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible { background-size: 100% 1px; }
+
+  /* Tag: pílula do design system */
+  .tag {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.8125rem] font-bold;
+    background: #f1f1e7;
+    border: 1px solid #dbddc2;
+    color: #4e5307;
+  }
+  .theme-dark .tag {
+    background: #1c1e03;
+    border-color: #2c2f04;
+    color: #dbddc2;
+  }
+}
+
+@layer utilities {
+  .text-muted { color: var(--muted); }
+  .text-subtle { color: var(--subtle); }
+  .text-accent { color: var(--accent); }
+  .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+
+  /* Revelação suave ao rolar */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+  }
+}
